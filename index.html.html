@@ -1,0 +1,425 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:38px;height:38px;background:#F5A623;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-text{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+.logo-sub{font-size:12px;color:var(--color-text-secondary)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.75rem 1rem}
+.stat-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.stat-val{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.tabs{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.tab{padding:6px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary)}
+.tab.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
+.table-wrap{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+th{background:var(--color-background-secondary);padding:8px 10px;text-align:left;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+td{padding:8px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--color-background-secondary)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.badge-ok{background:var(--color-background-success);color:var(--color-text-success)}
+.badge-low{background:var(--color-background-warning);color:var(--color-text-warning)}
+.badge-out{background:var(--color-background-danger);color:var(--color-text-danger)}
+.loc-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:11px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.modal-bg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:100;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:1.5rem;width:440px;max-width:96%;border:0.5px solid var(--color-border-tertiary);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:500;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px}
+.form-row input,.form-row select,.form-row textarea{width:100%}
+.form-row textarea{height:56px;resize:none}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-row{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem}
+.btn-primary{background:var(--color-background-info);color:var(--color-text-info);border:none;padding:7px 18px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer;font-weight:500}
+.btn-danger-solid{background:var(--color-background-danger);color:var(--color-text-danger);border:none;padding:7px 18px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer}
+.btn-cancel{background:transparent;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);padding:7px 18px;border-radius:var(--border-radius-md);font-size:13px;cursor:pointer}
+.actions{display:flex;gap:4px;justify-content:center}
+.icon-btn{border:none;background:transparent;cursor:pointer;color:var(--color-text-secondary);padding:4px;font-size:16px;border-radius:4px}
+.icon-btn:hover{background:var(--color-background-secondary)}
+.top-btns{display:flex;gap:8px;flex-wrap:wrap}
+.search-row{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.search-row input,.search-row select{font-size:13px}
+.log-row{padding:10px 12px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.log-row:last-child{border-bottom:none}
+.log-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.low-alert{background:var(--color-background-warning);border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;color:var(--color-text-warning);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.sec-title{font-size:14px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.loc-section{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;margin-bottom:4px}
+.loc-section label{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:4px}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">ระบบสต๊อคสินค้าไฟฟ้า บริษัทแมนโก</h2>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🥭</div>
+    <div>
+      <div class="logo-text">แมนโก อิเล็กทริค</div>
+      <div class="logo-sub">ระบบสต๊อคสินค้างานไฟฟ้า</div>
+    </div>
+  </div>
+  <div class="top-btns">
+    <button class="btn-primary" onclick="openModal('in')"><i class="ti ti-plus" aria-hidden="true"></i> นำของเข้า</button>
+    <button class="btn-danger-solid" onclick="openModal('out')"><i class="ti ti-arrow-up-right" aria-hidden="true"></i> เบิกของออก</button>
+  </div>
+</div>
+
+<div class="stats" id="statsArea"></div>
+<div id="lowAlert"></div>
+<div class="tabs" id="tabsArea"></div>
+
+<div class="search-row">
+  <input type="text" id="searchBox" placeholder="🔍 ค้นหาสินค้า ชื่อ / ตู้ / ชั้น..." oninput="renderTable()" style="flex:1;min-width:160px">
+  <select id="filterLoc" onchange="renderTable()" style="min-width:130px">
+    <option value="">ทุกตำแหน่ง</option>
+  </select>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="width:28%">ชื่อสินค้า</th>
+      <th style="width:15%">หมวดหมู่</th>
+      <th style="width:16%"><i class="ti ti-map-pin" aria-hidden="true"></i> ตำแหน่ง</th>
+      <th style="width:8%;text-align:center">คงเหลือ</th>
+      <th style="width:7%;text-align:center">หน่วย</th>
+      <th style="width:9%;text-align:center">สถานะ</th>
+      <th style="width:17%;text-align:center">จัดการ</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<div style="margin-top:1.5rem">
+  <div class="sec-title"><i class="ti ti-history" aria-hidden="true"></i> ประวัติการเคลื่อนไหวล่าสุด</div>
+  <div class="table-wrap"><div id="logArea"></div></div>
+</div>
+</div>
+
+<!-- Modal นำเข้า/เบิกออก -->
+<div class="modal-bg" id="txModal">
+<div class="modal">
+  <div class="modal-title">
+    <span id="modalTitle">นำของเข้า</span>
+    <button class="icon-btn" onclick="closeModal()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="form-row"><label>ชื่อผู้ดำเนินการ *</label><input type="text" id="txPerson" placeholder="ระบุชื่อ-นามสกุล"></div>
+  <div class="form-row"><label>สินค้า *</label><select id="txItem" onchange="fillTxLoc()"></select></div>
+  <div class="form-row"><label>จำนวน *</label><input type="number" id="txQty" min="1" placeholder="0"></div>
+  <div class="form-row">
+    <label>ตำแหน่งที่เก็บ (ตู้/ชั้น) <span style="color:var(--color-text-secondary);font-size:11px">— แก้ไขได้</span></label>
+    <div class="form-2col">
+      <div><label style="font-size:11px">ตู้/พื้นที่</label><input type="text" id="txCabinet" placeholder="เช่น ตู้ A, ตู้ B"></div>
+      <div><label style="font-size:11px">ชั้น/แถว</label><input type="text" id="txShelf" placeholder="เช่น ชั้น 1, แถว 2"></div>
+    </div>
+  </div>
+  <div class="form-row"><label>หมายเหตุ</label><textarea id="txNote" placeholder="รายละเอียดเพิ่มเติม..."></textarea></div>
+  <div class="btn-row">
+    <button class="btn-cancel" onclick="closeModal()">ยกเลิก</button>
+    <button class="btn-primary" id="txConfirm" onclick="submitTx()">ยืนยัน</button>
+  </div>
+</div>
+</div>
+
+<!-- Modal แก้ไข -->
+<div class="modal-bg" id="editModal">
+<div class="modal">
+  <div class="modal-title">
+    <span>แก้ไขสินค้า</span>
+    <button class="icon-btn" onclick="document.getElementById('editModal').classList.remove('open')"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="form-row"><label>ชื่อสินค้า *</label><input type="text" id="editName"></div>
+  <div class="form-row"><label>หมวดหมู่</label><select id="editCat"></select></div>
+  <div class="form-2col" style="margin-bottom:12px">
+    <div class="form-row" style="margin:0"><label>จำนวนคงเหลือ</label><input type="number" id="editQty" min="0"></div>
+    <div class="form-row" style="margin:0"><label>หน่วย</label><input type="text" id="editUnit"></div>
+  </div>
+  <div class="form-row"><label>ขั้นต่ำแจ้งเตือน</label><input type="number" id="editMin" min="0"></div>
+  <div class="loc-section">
+    <label><i class="ti ti-map-pin" aria-hidden="true"></i> ตำแหน่งที่เก็บ</label>
+    <div class="form-2col">
+      <div><label style="font-size:11px">ตู้/พื้นที่</label><input type="text" id="editCabinet" placeholder="เช่น ตู้ A"></div>
+      <div><label style="font-size:11px">ชั้น/แถว</label><input type="text" id="editShelf" placeholder="เช่น ชั้น 2"></div>
+    </div>
+    <div style="margin-top:8px"><label style="font-size:11px">หมายเหตุตำแหน่ง</label><input type="text" id="editLocNote" placeholder="เช่น ใกล้ประตู, กล่องสีแดง"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-cancel" onclick="document.getElementById('editModal').classList.remove('open')">ยกเลิก</button>
+    <button class="btn-primary" onclick="saveEdit()">บันทึก</button>
+  </div>
+</div>
+</div>
+
+<!-- Modal เพิ่มสินค้า -->
+<div class="modal-bg" id="addModal">
+<div class="modal">
+  <div class="modal-title">
+    <span>เพิ่มสินค้าใหม่</span>
+    <button class="icon-btn" onclick="document.getElementById('addModal').classList.remove('open')"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="form-row"><label>ชื่อสินค้า *</label><input type="text" id="addName"></div>
+  <div class="form-row"><label>หมวดหมู่ *</label><select id="addCat"></select></div>
+  <div class="form-2col" style="margin-bottom:12px">
+    <div class="form-row" style="margin:0"><label>จำนวนเริ่มต้น</label><input type="number" id="addQty" min="0" value="0"></div>
+    <div class="form-row" style="margin:0"><label>หน่วย</label><input type="text" id="addUnit" placeholder="เช่น ม้วน, อัน"></div>
+  </div>
+  <div class="form-row"><label>ขั้นต่ำแจ้งเตือน</label><input type="number" id="addMin" min="0" value="5"></div>
+  <div class="loc-section">
+    <label><i class="ti ti-map-pin" aria-hidden="true"></i> ตำแหน่งที่เก็บ</label>
+    <div class="form-2col">
+      <div><label style="font-size:11px">ตู้/พื้นที่</label><input type="text" id="addCabinet" placeholder="เช่น ตู้ A"></div>
+      <div><label style="font-size:11px">ชั้น/แถว</label><input type="text" id="addShelf" placeholder="เช่น ชั้น 1"></div>
+    </div>
+    <div style="margin-top:8px"><label style="font-size:11px">หมายเหตุตำแหน่ง</label><input type="text" id="addLocNote" placeholder="เช่น ใกล้ประตู, กล่องสีแดง"></div>
+  </div>
+  <div class="btn-row">
+    <button class="btn-cancel" onclick="document.getElementById('addModal').classList.remove('open')">ยกเลิก</button>
+    <button class="btn-primary" onclick="saveAdd()">เพิ่มสินค้า</button>
+  </div>
+</div>
+</div>
+
+<script>
+const CATS=[
+  {id:'wire',label:'🔌 สายไฟ'},{id:'switch',label:'💡 สวิตช์/เบรกเกอร์'},
+  {id:'conduit',label:'🔧 ท่อร้อยสาย'},{id:'fitting',label:'🔩 อุปกรณ์ต่อพ่วง'},
+  {id:'light',label:'💡 โคมไฟ/หลอด'},{id:'meter',label:'📊 มิเตอร์/อุปกรณ์วัด'},
+  {id:'protect',label:'🛡 อุปกรณ์ป้องกัน'},{id:'other',label:'📦 อื่นๆ'},
+];
+
+let items=[
+  {id:1,name:'สายไฟ THW 1.5 sq.mm',cat:'wire',qty:45,unit:'ม้วน',min:5,cabinet:'ตู้ A',shelf:'ชั้น 1',locNote:''},
+  {id:2,name:'สายไฟ THW 2.5 sq.mm',cat:'wire',qty:30,unit:'ม้วน',min:5,cabinet:'ตู้ A',shelf:'ชั้น 1',locNote:''},
+  {id:3,name:'สายไฟ THW 4 sq.mm',cat:'wire',qty:12,unit:'ม้วน',min:3,cabinet:'ตู้ A',shelf:'ชั้น 2',locNote:''},
+  {id:4,name:'สายไฟ NYY 4x4 sq.mm',cat:'wire',qty:8,unit:'ม้วน',min:2,cabinet:'ตู้ A',shelf:'ชั้น 3',locNote:'ม้วนใหญ่'},
+  {id:5,name:'เบรกเกอร์ 1P 20A',cat:'switch',qty:24,unit:'อัน',min:10,cabinet:'ตู้ B',shelf:'ชั้น 1',locNote:''},
+  {id:6,name:'เบรกเกอร์ 2P 30A',cat:'switch',qty:15,unit:'อัน',min:5,cabinet:'ตู้ B',shelf:'ชั้น 1',locNote:''},
+  {id:7,name:'เบรกเกอร์ 3P 50A',cat:'switch',qty:4,unit:'อัน',min:3,cabinet:'ตู้ B',shelf:'ชั้น 2',locNote:''},
+  {id:8,name:'สวิตช์เดี่ยว',cat:'switch',qty:2,unit:'อัน',min:10,cabinet:'ตู้ B',shelf:'ชั้น 3',locNote:''},
+  {id:9,name:'ท่อ PVC 3/4"',cat:'conduit',qty:60,unit:'เส้น',min:10,cabinet:'พื้นที่ C',shelf:'แถว 1',locNote:'วางแนวนอน'},
+  {id:10,name:'ท่อ PVC 1"',cat:'conduit',qty:35,unit:'เส้น',min:10,cabinet:'พื้นที่ C',shelf:'แถว 1',locNote:''},
+  {id:11,name:'ท่อ EMT 3/4"',cat:'conduit',qty:20,unit:'เส้น',min:5,cabinet:'พื้นที่ C',shelf:'แถว 2',locNote:''},
+  {id:12,name:'ข้อต่อท่อ PVC 3/4"',cat:'fitting',qty:120,unit:'อัน',min:20,cabinet:'ตู้ D',shelf:'ชั้น 1',locNote:'ถุงซิป'},
+  {id:13,name:'กล่องพักสาย 4x4',cat:'fitting',qty:50,unit:'อัน',min:10,cabinet:'ตู้ D',shelf:'ชั้น 2',locNote:''},
+  {id:14,name:'ปลั๊กตัวผู้ 3ขา',cat:'fitting',qty:30,unit:'อัน',min:10,cabinet:'ตู้ D',shelf:'ชั้น 2',locNote:''},
+  {id:15,name:'โคมไฟ LED 18W',cat:'light',qty:18,unit:'ดวง',min:5,cabinet:'ตู้ E',shelf:'ชั้น 1',locNote:'กล่องขาว'},
+  {id:16,name:'หลอด LED 9W',cat:'light',qty:40,unit:'หลอด',min:10,cabinet:'ตู้ E',shelf:'ชั้น 2',locNote:''},
+  {id:17,name:'มิเตอร์วัดกระแส',cat:'meter',qty:5,unit:'ชุด',min:2,cabinet:'ตู้ F',shelf:'ชั้น 1',locNote:'ใส่กล่องโฟม'},
+  {id:18,name:'แคลมป์มิเตอร์',cat:'meter',qty:3,unit:'ชุด',min:1,cabinet:'ตู้ F',shelf:'ชั้น 1',locNote:''},
+  {id:19,name:'Ground Rod 5/8"',cat:'protect',qty:0,unit:'เส้น',min:5,cabinet:'พื้นที่ C',shelf:'แถว 3',locNote:''},
+  {id:20,name:'เทปพันสาย 3M',cat:'other',qty:60,unit:'ม้วน',min:15,cabinet:'ตู้ D',shelf:'ชั้น 3',locNote:''},
+];
+
+let logs=[
+  {type:'in',item:'สายไฟ THW 1.5 sq.mm',qty:10,person:'สมชาย ใจดี',note:'รับสินค้าจากซัพพลายเออร์',loc:'ตู้ A ชั้น 1',time:'22/05/2026 09:30'},
+  {type:'out',item:'เบรกเกอร์ 1P 20A',qty:5,person:'วิชัย พรหมมา',note:'งานโครงการ A101',loc:'ตู้ B ชั้น 1',time:'22/05/2026 10:15'},
+  {type:'out',item:'สายไฟ THW 2.5 sq.mm',qty:3,person:'สมชาย ใจดี',note:'งานซ่อมบำรุง',loc:'ตู้ A ชั้น 1',time:'21/05/2026 14:00'},
+  {type:'in',item:'โคมไฟ LED 18W',qty:10,person:'มานะ สมบูรณ์',note:'',loc:'ตู้ E ชั้น 1',time:'21/05/2026 11:00'},
+  {type:'out',item:'Ground Rod 5/8"',qty:5,person:'วิชัย พรหมมา',note:'งานสายดิน B202',loc:'พื้นที่ C แถว 3',time:'20/05/2026 09:00'},
+];
+
+let nextId=21,activeCat='all',txMode='in',editId=null;
+
+function getCatLabel(id){const c=CATS.find(c=>c.id===id);return c?c.label:id;}
+function getStatus(item){
+  if(item.qty===0) return{label:'หมด',cls:'badge-out'};
+  if(item.qty<=item.min) return{label:'ใกล้หมด',cls:'badge-low'};
+  return{label:'ปกติ',cls:'badge-ok'};
+}
+function locStr(item){
+  let s='';
+  if(item.cabinet) s+=item.cabinet;
+  if(item.shelf) s+=(s?' · ':'')+item.shelf;
+  return s;
+}
+function allLocations(){
+  const s=new Set();
+  items.forEach(i=>{if(i.cabinet)s.add(i.cabinet);});
+  return [...s].sort();
+}
+
+function renderStats(){
+  const total=items.length,low=items.filter(i=>i.qty>0&&i.qty<=i.min).length,out=items.filter(i=>i.qty===0).length,ok=total-low-out;
+  document.getElementById('statsArea').innerHTML=`
+    <div class="stat"><div class="stat-label">สินค้าทั้งหมด</div><div class="stat-val">${total} รายการ</div></div>
+    <div class="stat"><div class="stat-label">พร้อมใช้งาน</div><div class="stat-val" style="color:var(--color-text-success)">${ok}</div></div>
+    <div class="stat"><div class="stat-label">ใกล้หมด</div><div class="stat-val" style="color:var(--color-text-warning)">${low}</div></div>
+    <div class="stat"><div class="stat-label">หมดสต๊อค</div><div class="stat-val" style="color:var(--color-text-danger)">${out}</div></div>`;
+  const alerts=items.filter(i=>i.qty<=i.min);
+  document.getElementById('lowAlert').innerHTML=alerts.length?`<div class="low-alert"><i class="ti ti-alert-triangle" aria-hidden="true"></i> แจ้งเตือน: <strong>${alerts.length} รายการ</strong> ต้องสั่งซื้อ — ${alerts.map(a=>a.name).join(', ')}</div>`:'';
+}
+
+function renderTabs(){
+  const counts={};CATS.forEach(c=>counts[c.id]=0);
+  items.forEach(i=>{if(counts[i.cat]!==undefined)counts[i.cat]++;});
+  let html=`<button class="tab ${activeCat==='all'?'active':''}" onclick="setTab('all')">ทั้งหมด (${items.length})</button>`;
+  CATS.forEach(c=>{html+=`<button class="tab ${activeCat===c.id?'active':''}" onclick="setTab('${c.id}')">${c.label} (${counts[c.id]||0})</button>`;});
+  html+=`<button class="tab" style="border-color:var(--color-border-info);color:var(--color-text-info)" onclick="openAdd()"><i class="ti ti-plus" aria-hidden="true"></i> เพิ่มสินค้า</button>`;
+  document.getElementById('tabsArea').innerHTML=html;
+}
+
+function setTab(cat){activeCat=cat;renderTabs();renderTable();}
+
+function renderTable(){
+  const q=document.getElementById('searchBox').value.toLowerCase();
+  const fl=document.getElementById('filterLoc').value;
+  // update loc filter options
+  const sel=document.getElementById('filterLoc');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">ทุกตำแหน่ง</option>'+allLocations().map(l=>`<option value="${l}" ${l===cur?'selected':''}>${l}</option>`).join('');
+
+  let filtered=items.filter(i=>{
+    if(activeCat!=='all'&&i.cat!==activeCat)return false;
+    if(fl&&i.cabinet!==fl)return false;
+    if(q&&!i.name.toLowerCase().includes(q)&&!getCatLabel(i.cat).toLowerCase().includes(q)&&!locStr(i).toLowerCase().includes(q))return false;
+    return true;
+  });
+  document.getElementById('tableBody').innerHTML=filtered.map(i=>{
+    const s=getStatus(i);
+    const loc=locStr(i);
+    return `<tr>
+      <td style="font-weight:500">${i.name}</td>
+      <td><span style="font-size:11px">${getCatLabel(i.cat)}</span></td>
+      <td>${loc?`<span class="loc-badge"><i class="ti ti-map-pin" aria-hidden="true" style="font-size:12px"></i>${loc}${i.locNote?` <span style="color:var(--color-text-secondary);font-size:10px">(${i.locNote})</span>`:''}</span>`:'<span style="color:var(--color-text-secondary);font-size:11px">—</span>'}</td>
+      <td style="text-align:center;font-weight:500;font-size:15px">${i.qty}</td>
+      <td style="text-align:center;color:var(--color-text-secondary)">${i.unit}</td>
+      <td style="text-align:center"><span class="badge ${s.cls}">${s.label}</span></td>
+      <td style="text-align:center">
+        <div class="actions">
+          <button class="icon-btn" title="นำเข้า" onclick="openModalItem('in',${i.id})"><i class="ti ti-plus"></i></button>
+          <button class="icon-btn" title="เบิกออก" onclick="openModalItem('out',${i.id})"><i class="ti ti-arrow-up-right"></i></button>
+          <button class="icon-btn" title="แก้ไข" onclick="openEdit(${i.id})"><i class="ti ti-edit"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderLogs(){
+  document.getElementById('logArea').innerHTML=logs.slice(0,10).map(l=>`
+    <div class="log-row">
+      <div class="log-dot" style="background:${l.type==='in'?'var(--color-background-success)':'var(--color-background-danger)'}"></div>
+      <div style="flex:1">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="badge ${l.type==='in'?'badge-ok':'badge-out'}">${l.type==='in'?'นำเข้า':'เบิกออก'}</span>
+          <span style="font-weight:500">${l.item}</span>
+          <span style="color:var(--color-text-secondary)">${l.qty} ชิ้น</span>
+          ${l.loc?`<span class="loc-badge" style="font-size:11px"><i class="ti ti-map-pin" aria-hidden="true" style="font-size:11px"></i>${l.loc}</span>`:''}
+        </div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:3px">
+          <i class="ti ti-user" aria-hidden="true" style="font-size:12px"></i> ${l.person}${l.note?` · ${l.note}`:''} · ${l.time}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function renderAll(){renderStats();renderTabs();renderTable();renderLogs();}
+
+function openModal(mode){
+  txMode=mode;
+  document.getElementById('modalTitle').textContent=mode==='in'?'นำของเข้าสต๊อค':'เบิกของออกจากสต๊อค';
+  document.getElementById('txConfirm').textContent=mode==='in'?'ยืนยันนำเข้า':'ยืนยันเบิกออก';
+  document.getElementById('txPerson').value='';
+  document.getElementById('txQty').value='';
+  document.getElementById('txNote').value='';
+  const sel=document.getElementById('txItem');
+  sel.innerHTML=items.map(i=>`<option value="${i.id}">${i.name} (${locStr(i)||'ไม่ระบุตำแหน่ง'}) คงเหลือ ${i.qty} ${i.unit}</option>`).join('');
+  fillTxLoc();
+  document.getElementById('txModal').classList.add('open');
+}
+
+function fillTxLoc(){
+  const id=parseInt(document.getElementById('txItem').value);
+  const item=items.find(i=>i.id===id);
+  if(item){
+    document.getElementById('txCabinet').value=item.cabinet||'';
+    document.getElementById('txShelf').value=item.shelf||'';
+  }
+}
+
+function openModalItem(mode,id){openModal(mode);document.getElementById('txItem').value=id;fillTxLoc();}
+function closeModal(){document.getElementById('txModal').classList.remove('open');}
+
+function submitTx(){
+  const person=document.getElementById('txPerson').value.trim();
+  const id=parseInt(document.getElementById('txItem').value);
+  const qty=parseInt(document.getElementById('txQty').value);
+  const note=document.getElementById('txNote').value.trim();
+  const cabinet=document.getElementById('txCabinet').value.trim();
+  const shelf=document.getElementById('txShelf').value.trim();
+  if(!person){alert('กรุณาระบุชื่อผู้ดำเนินการ');return;}
+  if(!qty||qty<1){alert('กรุณาระบุจำนวนที่ถูกต้อง');return;}
+  const item=items.find(i=>i.id===id);
+  if(!item)return;
+  if(txMode==='out'&&qty>item.qty){alert(`สินค้าไม่เพียงพอ คงเหลือเพียง ${item.qty} ${item.unit}`);return;}
+  if(txMode==='in')item.qty+=qty; else item.qty-=qty;
+  if(cabinet)item.cabinet=cabinet;
+  if(shelf)item.shelf=shelf;
+  const now=new Date();
+  const ts=`${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  const locLabel=[cabinet,shelf].filter(Boolean).join(' ');
+  logs.unshift({type:txMode,item:item.name,qty,person,note,loc:locLabel,time:ts});
+  closeModal();renderAll();
+}
+
+function openEdit(id){
+  editId=id;
+  const item=items.find(i=>i.id===id);
+  document.getElementById('editName').value=item.name;
+  document.getElementById('editQty').value=item.qty;
+  document.getElementById('editUnit').value=item.unit;
+  document.getElementById('editMin').value=item.min;
+  document.getElementById('editCabinet').value=item.cabinet||'';
+  document.getElementById('editShelf').value=item.shelf||'';
+  document.getElementById('editLocNote').value=item.locNote||'';
+  const sel=document.getElementById('editCat');
+  sel.innerHTML=CATS.map(c=>`<option value="${c.id}" ${c.id===item.cat?'selected':''}>${c.label}</option>`).join('');
+  document.getElementById('editModal').classList.add('open');
+}
+
+function saveEdit(){
+  const item=items.find(i=>i.id===editId);
+  const name=document.getElementById('editName').value.trim();
+  if(!name){alert('กรุณาระบุชื่อสินค้า');return;}
+  item.name=name;item.cat=document.getElementById('editCat').value;
+  item.qty=parseInt(document.getElementById('editQty').value)||0;
+  item.unit=document.getElementById('editUnit').value.trim()||'อัน';
+  item.min=parseInt(document.getElementById('editMin').value)||0;
+  item.cabinet=document.getElementById('editCabinet').value.trim();
+  item.shelf=document.getElementById('editShelf').value.trim();
+  item.locNote=document.getElementById('editLocNote').value.trim();
+  document.getElementById('editModal').classList.remove('open');renderAll();
+}
+
+function openAdd(){
+  ['addName','addUnit','addCabinet','addShelf','addLocNote'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('addQty').value='0';document.getElementById('addMin').value='5';
+  const sel=document.getElementById('addCat');
+  sel.innerHTML=CATS.map(c=>`<option value="${c.id}">${c.label}</option>`).join('');
+  document.getElementById('addModal').classList.add('open');
+}
+
+function saveAdd(){
+  const name=document.getElementById('addName').value.trim();
+  if(!name){alert('กรุณาระบุชื่อสินค้า');return;}
+  items.push({id:nextId++,name,cat:document.getElementById('addCat').value,
+    qty:parseInt(document.getElementById('addQty').value)||0,
+    unit:document.getElementById('addUnit').value.trim()||'อัน',
+    min:parseInt(document.getElementById('addMin').value)||5,
+    cabinet:document.getElementById('addCabinet').value.trim(),
+    shelf:document.getElementById('addShelf').value.trim(),
+    locNote:document.getElementById('addLocNote').value.trim(),
+  });
+  document.getElementById('addModal').classList.remove('open');renderAll();
+}
+
+renderAll();
+</script>
